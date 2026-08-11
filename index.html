@@ -61,13 +61,16 @@ nav{
   border-bottom:1px solid var(--line);
 }
 .nav-in{display:flex;align-items:center;gap:22px;height:68px}
-.brand{display:flex;align-items:center;gap:11px;text-decoration:none;margin-right:auto}
-.badge{
-  width:32px;height:32px;border-radius:9px;background:var(--accent);color:var(--on-accent);
-  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;
-  letter-spacing:.03em;flex:none;
+.brand{display:block;text-decoration:none;margin-right:auto}
+.brand-name{
+  font-size:19px;font-weight:600;letter-spacing:-.018em;white-space:nowrap;color:var(--ink);
 }
-.brand-name{font-weight:600;font-size:15.5px;letter-spacing:-.012em;white-space:nowrap}
+/* an underline that draws in on hover, replacing the badge as the brand's cue */
+.brand-name::after{
+  content:"";display:block;height:1.5px;width:0;background:var(--accent);
+  margin-top:2px;transition:width .3s var(--ease);
+}
+.brand:hover .brand-name::after{width:100%}
 .nav-links{display:flex;gap:19px;list-style:none;flex-wrap:nowrap}
 .nav-links a{
   display:flex;align-items:baseline;gap:6px;text-decoration:none;font-size:13.5px;
@@ -361,9 +364,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 76px;color:var(--ink-3);f
 .act h3{transition:color .22s var(--ease)}
 
 /* nav, brand and photo */
-.brand:hover .badge{transform:rotate(-6deg) scale(1.06)}
-.badge{transition:transform .25s var(--ease)}
-.brand:hover .brand-name{color:var(--accent)}
+.brand:hover .brand:hover .brand-name{color:var(--accent)}
 .brand-name{transition:color .22s var(--ease)}
 .nav-links a:hover i{opacity:1}
 .nav-links a i{transition:opacity .2s var(--ease)}
@@ -375,7 +376,7 @@ footer{border-top:1px solid var(--line);padding:56px 0 76px;color:var(--ink-3);f
 @media(prefers-reduced-motion:reduce){
   .card::after,.skill-col::after,.paper::before,.job::before,.edu::before{transition:none}
   .paper:hover,.job:hover,.edu:hover,.award:hover,.act:hover{padding-left:0}
-  .photo-wrap:hover img,.brand:hover .badge,.edu:hover .mark{transform:none}
+  .photo-wrap:hover img,.edu:hover .mark{transform:none}
 }
 
 /* A pointer-less device should not get sticky hover states. */
@@ -437,8 +438,7 @@ nav{animation:fadeIn .6s var(--ease) both}
 <nav>
   <div class="wrap nav-in">
     <a href="#top" class="brand">
-      <span class="badge" id="nav-badge"></span>
-      <span class="brand-name" id="nav-name"></span>
+      <span class="brand-name serif" id="nav-name"></span>
     </a>
     <ul class="nav-links" id="navlinks"></ul>
   </div>
@@ -488,11 +488,9 @@ const el = (t, c, h) => { const n = document.createElement(t); if (c) n.classNam
   if (h !== undefined) n.innerHTML = h; return n; };
 const esc  = s => String(s ?? "").replace(/[<>&]/g, m => ({ "<":"&lt;", ">":"&gt;", "&":"&amp;" }[m]));
 const tidy = s => String(s ?? "").replace(/\s+/g, " ").trim();
-const initials = n => n.split(/\s+/).filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join("");
 
 /* ---- nav brand ---- */
 document.title = DATA.name;
-$("nav-badge").textContent = initials(DATA.name);
 $("nav-name").textContent  = DATA.name;
 
 /* ---- hero ---- */
