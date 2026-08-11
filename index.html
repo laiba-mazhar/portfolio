@@ -388,14 +388,22 @@ footer{border-top:1px solid var(--line);padding:56px 0 76px;color:var(--ink-3);f
 /* ------------------------------------------------------------- animation */
 :root{ --ease:cubic-bezier(.22,.61,.36,1) }
 
-/* scroll reveal */
-.rv{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
-.rv.in{opacity:1;transform:none}
-/* padding-left is listed here too: this rule otherwise overrides the hover
-   transition on .paper / .job / .edu, making the hover snap instead of glide. */
-.stagger>*{opacity:0;transform:translateY(18px);
-  transition:opacity .6s var(--ease),transform .6s var(--ease),padding-left .3s var(--ease)}
-.stagger.in>*{opacity:1;transform:none}
+/* Scroll reveal, per item.
+   This used to sit on the whole section wrapper, which meant a tall section
+   revealed everything inside it the moment its top edge appeared — so by the
+   time you scrolled down, the content was already there. Each row, card and
+   column is now observed on its own and arrives as you reach it.
+   padding-left is in the transition list because the hover states on
+   .paper/.job/.edu animate it, and a second transition rule would override them. */
+/* Content is visible by default. It is only hidden while `reveal-on` is set on
+   <html>, which JS adds after confirming IntersectionObserver exists, and removes
+   again if the observer never fires. A scroll animation must degrade to "shown",
+   never to a blank page. */
+.rv,.rv-item{
+  transition:opacity .6s var(--ease),transform .6s var(--ease),padding-left .3s var(--ease);
+}
+html.reveal-on .rv:not(.in),
+html.reveal-on .rv-item:not(.in){opacity:0;transform:translateY(22px)}
 
 /* the section rule draws itself in as the section arrives */
 section{position:relative}
@@ -426,7 +434,7 @@ nav{animation:fadeIn .6s var(--ease) both}
 #more-projects:not(.hidden)>*{animation:unfold .5s var(--ease) both}
 
 @media(prefers-reduced-motion:reduce){
-  .rv,.stagger>*{opacity:1!important;transform:none!important;transition:none!important}
+  html.reveal-on .rv,html.reveal-on .rv-item{opacity:1!important;transform:none!important;transition:none!important}
   .hero-text>*,.photo-wrap,nav,.eyebrow::before,#more-projects>*{animation:none!important}
   section::before{transition:none;width:100%}
   html{scroll-behavior:auto}
@@ -535,14 +543,13 @@ heroLinks.forEach(x => {
 const main = $("main"), nav = $("navlinks");
 let n = 0;
 
-function section(id, title, node, stagger, navLabel) {
+function section(id, title, node, navLabel) {
   if (!node) return;
   n++;
   const s = el("section"); s.id = id;
-  const w = el("div", "wrap rv");
-  const head = el("div", "s-head");
+  const w = el("div", "wrap");
+  const head = el("div", "s-head rv");
   head.append(el("span", "s-num", String(n).padStart(2, "0")), el("h2", "serif", esc(title)));
-  if (stagger) node.classList.add("stagger");
   w.append(head, node); s.append(w); main.append(s);
 
   const li = el("li"), a = el("a", "", `<i>${String(n).padStart(2,"0")}</i>${esc(navLabel || title)}`);
@@ -590,7 +597,7 @@ if (DATA.research?.length) {
     }
     box.append(d);
   });
-  section("research", "Research", box, true);
+  section("research", "Research", box);
 }
 
 /* education */
@@ -609,7 +616,7 @@ if (DATA.education?.length) {
     d.append(mark, r, el("div", "when", esc(e.period)));
     box.append(d);
   });
-  section("education", "Education", box, true);
+  section("education", "Education", box);
 }
 
 /* experience */
@@ -633,7 +640,7 @@ if (DATA.experience?.length) {
     }
     d.append(r); box.append(d);
   });
-  section("experience", "Experience", box, true);
+  section("experience", "Experience", box);
 }
 
 /* projects — featured first, the rest behind a button */
@@ -655,7 +662,7 @@ if (DATA.projects?.length) {
 
   if (featured.length) {
     box.append(el("h3", "group-label", "Selected work"));
-    const g = el("div", "grid stagger"); featured.forEach(p => g.append(card(p))); box.append(g);
+    const g = el("div", "grid"); featured.forEach(p => g.append(card(p))); box.append(g);
   }
 
   if (rest.length) {
@@ -678,7 +685,7 @@ if (DATA.projects?.length) {
     };
     wrap.append(btn); box.append(wrap);
   }
-  section("projects", "My Projects", box, false, "Projects");
+  section("projects", "My Projects", box, "Projects");
 }
 
 /* skills */
@@ -691,7 +698,7 @@ if (DATA.skills?.length) {
     s.items.forEach(x => ul.append(el("li", "", esc(x))));
     col.append(ul); box.append(col);
   });
-  section("skills", "Skills", box, true);
+  section("skills", "Skills", box);
 }
 
 /* awards + certifications */
@@ -699,7 +706,7 @@ const listOf = rows => { const box = el("div");
   rows.forEach(a => { const d = el("div", "award");
     d.append(el("div", "y", esc(a.year)), el("div", "", esc(a.text))); box.append(d); });
   return box; };
-if (DATA.awards?.length) section("awards", "Awards & honours", listOf(DATA.awards), true, "Awards");
+if (DATA.awards?.length) section("awards", "Awards & honours", listOf(DATA.awards), "Awards");
 
 /* certifications, ventures and community — one section, grouped */
 if (DATA.activities?.length) {
@@ -724,7 +731,7 @@ if (DATA.activities?.length) {
     });
     box.append(wrap);
   });
-  section("activities", "Certifications, Ventures & Community", box, true, "Community");
+  section("activities", "Certifications, Ventures & Community", box, "Community");
 }
 
 /* interests & languages */
@@ -749,7 +756,7 @@ if (DATA.interests?.length || DATA.languages?.length) {
     });
     box.append(c);
   }
-  section("interests", "Interests & Languages", box, true, "Interests");
+  section("interests", "Interests & Languages", box, "Interests");
 }
 
 /* ---- footer ---- */
@@ -759,17 +766,47 @@ heroLinks.forEach(x => { const a = el("a", "", esc(x.t)); a.href = x.u;
 $("f-note").textContent = "© " + new Date().getFullYear() + " " + DATA.name + " · " + DATA.location;
 
 
-/* ---- reveal, with the children of .stagger cascading ---- */
-const rio = new IntersectionObserver(es => es.forEach(e => {
-  if (!e.isIntersecting) return;
-  e.target.classList.add("in");
-  e.target.closest("section")?.classList.add("seen");
-  e.target.querySelectorAll(".stagger").forEach(g =>
-    [...g.children].forEach((c, i) => { c.style.transitionDelay = Math.min(i * 65, 420) + "ms"; }));
-  e.target.querySelectorAll(".stagger").forEach(g => g.classList.add("in"));
-  rio.unobserve(e.target);
-}), { rootMargin: "0px 0px -70px 0px" });
-document.querySelectorAll(".rv").forEach(x => rio.observe(x));
+const root = document.documentElement;
+
+/* ---- reveal ---- */
+/* Every content row is its own trigger, so things arrive as you reach them
+   instead of a whole section flashing in when its top edge appears. */
+document.querySelectorAll(
+  ".paper, .job, .edu, .card, .skill-col, .award, .act, .lang, .group-label, #more-wrap"
+).forEach(el => el.classList.add("rv-item"));
+
+document.querySelectorAll(".rv-item").forEach(el => {
+  const i = [...el.parentElement.children].indexOf(el);
+  el.style.transitionDelay = Math.min(i * 55, 220) + "ms";
+});
+
+const targets = [...document.querySelectorAll(".rv, .rv-item")];
+const showAll = () => {
+  root.classList.remove("reveal-on");
+  targets.forEach(el => el.classList.add("in"));
+};
+
+if (!("IntersectionObserver" in window) ||
+    matchMedia("(prefers-reduced-motion:reduce)").matches) {
+  showAll();
+} else {
+  root.classList.add("reveal-on");
+
+  let seen = 0;
+  const rio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    seen++;
+    e.target.classList.add("in");
+    e.target.closest("section")?.classList.add("seen");
+    rio.unobserve(e.target);
+  }), { rootMargin: "0px 0px -12% 0px", threshold: 0.06 });
+
+  targets.forEach(x => rio.observe(x));
+
+  // Failsafe: if the observer has not reported anything shortly after load,
+  // something is wrong with it — show the page rather than leave it blank.
+  setTimeout(() => { if (seen === 0) showAll(); }, 2500);
+}
 
 /* ---- active nav link ---- */
 const links = [...document.querySelectorAll(".nav-links a")];
