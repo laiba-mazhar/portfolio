@@ -1,0 +1,5 @@
+# working files, not part of the published site
+sample-*.html
+logo_sheet.png
+_*.png
+.vercel/

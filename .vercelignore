@@ -1,0 +1,5 @@
+# internal previews and working files — not part of the published site
+sample-*.html
+logo_sheet.png
+README.md
+.tmp/
