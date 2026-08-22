@@ -114,7 +114,7 @@ const DATA = {
     {
       role: "Senior ML Automation Engineer",
       org: "AiPixal",
-      logo: "",                            // drop logos/aipixal.png in and point here
+      logo: "logos/aipixal.png",           // the glyph only; the wordmark is illegible at 40px
       place: "Johar Town, Lahore — On-site · Full-time",
       period: "Aug 2026 — Present",
       points: [],                          // TODO add two or three lines of what you do here
