@@ -262,6 +262,14 @@ h2{font-family:var(--serif);font-weight:600;letter-spacing:-.026em;line-height:1
 .card.gone{display:none}
 .none{color:var(--ink-3);padding:24px 0}
 
+/* Six cards show first; the rest arrive on demand, so the section opens at a
+   readable length instead of nineteen cards deep. The cap applies inside
+   whatever the filters have narrowed the set to. */
+.more-wrap{display:flex;justify-content:center;margin-top:22px}
+.more-wrap.off{display:none}
+.more svg{transition:transform .25s var(--ease)}
+.more.open svg{transform:rotate(180deg)}
+
 /* ================================================================= skills */
 /* Each group's bar is its share of the 93 listed skills — the count is real
    information, so it gets drawn rather than just printed. */
@@ -656,9 +664,11 @@ if (DATA.experience?.length) {
 }
 
 /* =============================================================== projects */
-/* All nineteen render. The previous build hid thirteen behind a "show all"
-   button, so most of the work was invisible unless you happened to click. */
+/* Six show first and the rest arrive on a button. The filters narrow the set,
+   the cap applies inside whatever is left, and picking a filter starts over at
+   six — so "show more" always refers to the list actually on screen. */
 if (DATA.projects?.length) {
+  const STEP = 6;
   const box = el("div");
   const cats = [...new Set(DATA.projects.map(p => p.category || "Other"))];
   const nFeat = DATA.projects.filter(p => p.featured).length;
@@ -691,14 +701,47 @@ if (DATA.projects?.length) {
       n:DATA.projects.filter(p => (p.category || "Other") === c).length })),
   ].filter(Boolean);
 
-  const apply = k => {
-    let shown = 0;
+  let filter = "*", cap = STEP;
+  const hit = c => filter === "*" ? true
+                 : filter === "@" ? c.dataset.pick === "1"
+                 : c.dataset.cat === filter;
+  const nHit = () => [...grid.querySelectorAll(".card")].filter(hit).length;
+
+  const moreWrap = el("div", "more-wrap rv");
+  const moreBtn  = el("button", "btn more");
+  const moreTxt  = el("span");
+  moreBtn.append(moreTxt, icon("M6 9.5l6 6 6-6"));
+  moreWrap.append(moreBtn);
+
+  /* `lift` marks the cards as revealed by the button rather than by scrolling.
+     Without it a card unhidden below the fold keeps the reveal transform and
+     sits there at zero opacity, because the observer already passed it by. */
+  const paint = lift => {
+    let n = 0;
     grid.querySelectorAll(".card").forEach(c => {
-      const ok = k === "*" ? true : k === "@" ? c.dataset.pick === "1" : c.dataset.cat === k;
-      c.classList.toggle("gone", !ok);
-      if (ok) shown++;
+      if (!hit(c)) { c.classList.add("gone"); return; }
+      n++;
+      const vis = n <= cap;
+      c.classList.toggle("gone", !vis);
+      if (vis && lift) c.classList.add("in");
     });
-    none.style.display = shown ? "none" : "block";
+    none.style.display = n ? "none" : "block";
+
+    const rest = Math.max(0, n - cap);
+    moreWrap.classList.toggle("off", n <= STEP);
+    moreBtn.classList.toggle("open", rest === 0);
+    moreTxt.textContent = rest ? `Show ${rest} more` : "Show fewer";
+    moreBtn.setAttribute("aria-expanded", String(rest === 0));
+  };
+
+  moreBtn.onclick = () => {
+    const n = nHit();
+    const collapsing = cap >= n;
+    cap = collapsing ? STEP : n;
+    paint(true);
+    // Collapsing shortens the page under the reader, so bring the button back.
+    if (collapsing) moreWrap.scrollIntoView({ block: "nearest",
+      behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   };
 
   defs.forEach((d, i) => {
@@ -706,12 +749,15 @@ if (DATA.projects?.length) {
     b.append(document.createTextNode(d.label), el("span", "n", String(d.n)));
     b.onclick = () => {
       filters.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
-      b.classList.add("on"); apply(d.k);
+      b.classList.add("on");
+      filter = d.k; cap = STEP;      // a new filter starts the count over
+      paint(true);
     };
     filters.append(b);
   });
 
-  box.append(filters, grid, none);
+  paint(false);
+  box.append(filters, grid, none, moreWrap);
   section("projects", "Projects", box, { count: DATA.projects.length + " total" });
 }
 
