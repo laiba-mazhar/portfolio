@@ -560,9 +560,16 @@ function section(id, title, node, opts = {}) {
   li.append(a2); dl.append(li);
 }
 
-const monogram = name => String(name).replace(/^TODO.*/i, "?")
-  .split(/\s+/).filter(w => w.length > 2 && !/^(of|and|the|for)$/i.test(w))
-  .slice(0, 2).map(w => w[0].toUpperCase()).join("");
+const monogram = name => {
+  const s = String(name).replace(/^TODO.*/i, "?").trim();
+  const words = s.split(/\s+/).filter(w => w.length > 2 && !/^(of|and|the|for)$/i.test(w));
+  if (words.length > 1) return words.slice(0, 2).map(w => w[0].toUpperCase()).join("");
+  // A single word gives a single letter, which reads as a typo. Prefer its own
+  // internal capitals — AiPixal becomes AP — and fall back to its first two.
+  const one = words[0] || s;
+  const caps = one.match(/[A-Z]/g);
+  return caps && caps.length > 1 ? caps.slice(0, 2).join("") : one.slice(0, 2).toUpperCase();
+};
 
 function orgMark(logo, org) {
   const m = el("div", "mark");

@@ -112,6 +112,15 @@ const DATA = {
   /* --- experience ------------------------------------------------------- */
   experience: [
     {
+      role: "Senior ML Automation Engineer",
+      org: "AiPixal",
+      logo: "",                            // drop logos/aipixal.png in and point here
+      place: "Johar Town, Lahore — On-site · Full-time",
+      period: "Aug 2026 — Present",
+      points: [],                          // TODO add two or three lines of what you do here
+      stack: [],                           // TODO the tools you actually use there
+    },
+    {
       role: "Data Developer & Analyst",
       org: "CloudWorks",
       logo: "logos/cloudworks.png",
