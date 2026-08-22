@@ -171,9 +171,11 @@ h1 em{font-style:italic;font-weight:400;color:var(--ink-2)}
 .mag .lb{color:var(--ink-3);margin:9px 0 12px;display:block}
 
 /* ============================================================== sections */
-main section{padding:88px 0;border-bottom:1px solid var(--line)}
-@media(max-width:860px){ main section{padding:56px 0} }
-.s-head{display:grid;grid-template-columns:var(--rail) 1fr;gap:0;margin-bottom:46px;
+/* Each section is meant to land in roughly one screen, so the rhythm between
+   them is tighter than it was and every long list caps itself. */
+main section{padding:48px 0;border-bottom:1px solid var(--line)}
+@media(max-width:860px){ main section{padding:40px 0} }
+.s-head{display:grid;grid-template-columns:var(--rail) 1fr;gap:0;margin-bottom:28px;
   align-items:baseline}
 .s-head .ix{color:var(--amber)}
 h2{font-family:var(--serif);font-weight:600;letter-spacing:-.026em;line-height:1;
@@ -201,12 +203,17 @@ h2{font-family:var(--serif);font-weight:600;letter-spacing:-.026em;line-height:1
 
 /* =============================================================== research */
 .led h3{font-family:var(--serif);font-weight:600;font-size:clamp(19px,2.1vw,25px);
-  line-height:1.24;letter-spacing:-.022em;max-width:40ch}
+  line-height:1.24;letter-spacing:-.022em;max-width:40ch;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 .who{color:var(--ink-2);font-size:14px;margin-top:11px}
 .st{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
   color:var(--blue);border:1px solid var(--blue-dim);background:var(--blue-dim);
   padding:3px 8px;border-radius:4px;margin-left:9px;white-space:nowrap}
-.abs{color:var(--ink-2);font-size:15px;margin-top:14px;max-width:76ch}
+/* An abstract runs to a full paragraph, and four of them turned Research into
+   two and a half screens. Clamped to a preview; the full text is in the paper
+   the row links to. */
+.abs{color:var(--ink-2);font-size:15px;margin-top:14px;max-width:76ch;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
 .row{display:flex;gap:18px;margin-top:16px;flex-wrap:wrap}
 .lnk{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:500;
   color:var(--amber)}
@@ -237,6 +244,15 @@ h2{font-family:var(--serif);font-weight:600;letter-spacing:-.026em;line-height:1
 
 /* =============================================================== projects */
 .filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px}
+/* Six chips wrap to four rows on a phone, which cost more height than the two
+   cards below them. One scrolling row instead. */
+@media(max-width:860px){
+  .filters{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+    margin-inline:calc(var(--gut) * -1);padding-inline:var(--gut);
+    scroll-snap-type:x proximity}
+  .filters::-webkit-scrollbar{display:none}
+  .chip{flex:none;scroll-snap-align:start}
+}
 .chip{border:1px solid var(--line);color:var(--ink-2);padding:7px 14px;border-radius:var(--r);
   font-size:13.5px;transition:border-color .2s,color .2s,background .2s}
 .chip .n{font-family:var(--mono);font-size:10px;opacity:.55;margin-left:7px}
@@ -259,7 +275,6 @@ h2{font-family:var(--serif);font-weight:600;letter-spacing:-.026em;line-height:1
   transition:transform .25s var(--ease),color .25s}
 .card:hover .aw{transform:translate(3px,-3px);color:var(--amber)}
 .card p{color:var(--ink-2);font-size:14.5px;margin-top:10px;flex:1}
-.card.gone{display:none}
 .none{color:var(--ink-3);padding:24px 0}
 
 /* Six cards show first; the rest arrive on demand, so the section opens at a
@@ -364,6 +379,12 @@ html.reveal-on .rv:not(.in){opacity:0;transform:translateY(14px)}
   .bar i{transition:none}
   .lnk:hover::after,.card:hover .aw{transform:none}
 }
+
+/* ============================================================== utilities */
+/* Last in the sheet on purpose. Rows collapsed by a "show more" button carry
+   .gone, and several of them (.led, .awd, .acts children) set their own
+   display, so this has to win on order rather than reach for !important. */
+.gone{display:none}
 </style>
 </head>
 <body>
@@ -593,6 +614,64 @@ function orgMark(logo, org) {
 const tagRow = list => { const t = el("div", "tags");
   list.forEach(x => t.append(el("span", "tag", x))); return t; };
 
+/* ------------------------------------------------------------- one screen */
+/* Every long list keeps `show` rows and puts the rest behind a button, so a
+   section lands in roughly a screen instead of scrolling for three.
+   `lift` marks button-revealed rows as shown: they carry the scroll-reveal
+   class and the observer already passed over them while they were display:none,
+   so without it they unhide at zero opacity and sit there blank. */
+const noMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* A row that sits in a three-column grid on a desktop stacks to full width on
+   a phone, so the same count is two or three times as tall. Each section
+   therefore keeps fewer rows on a narrow screen. Read once at boot: this only
+   sets the opening count, and re-deriving it on resize would fight whatever
+   the reader had already opened. */
+const narrow = matchMedia("(max-width: 860px)").matches;
+/* "Show 1 more degrees" reads as a bug, so the noun agrees with the count. */
+const plural = (n, word) => n === 1 ? word.replace(/ies$/, "y").replace(/s$/, "") : word;
+const keep = (wide, thin) => narrow ? thin : wide;
+
+function moreBar(label, onToggle) {
+  const wrap = el("div", "more-wrap rv");
+  const btn = el("button", "btn more");
+  const txt = el("span");
+  btn.append(txt, icon("M6 9.5l6 6 6-6"));
+  wrap.append(btn);
+  btn.onclick = () => onToggle(wrap, btn, txt);
+  return { wrap, btn, txt, label };
+}
+
+function collapse(box, sel, show, noun, after) {
+  const rows = [...box.querySelectorAll(sel)];
+  if (rows.length <= show) return null;
+  let open = false;
+
+  const paint = lift => {
+    rows.forEach((r, i) => {
+      const vis = open || i < show;
+      r.classList.toggle("gone", !vis);
+      if (vis && lift) r.classList.add("in");
+    });
+    if (after) after();
+    const rest = rows.length - show;
+    txt.textContent = open ? "Show fewer" : `Show ${rest} more ${plural(rest, noun)}`;
+    btn.classList.toggle("open", open);
+    btn.setAttribute("aria-expanded", String(open));
+  };
+
+  const { wrap, btn, txt } = moreBar("", () => {
+    open = !open;
+    paint(true);
+    // Collapsing shortens the page under the reader, so bring the button back.
+    if (!open) wrap.scrollIntoView({ block: "nearest",
+      behavior: noMotion() ? "auto" : "smooth" });
+  });
+
+  paint(false);
+  box.append(wrap);
+  return wrap;
+}
+
 /* a ledger row: gutter keys on the left, content on the right */
 const ledger = (keys, body) => {
   const d = el("div", "led rv");
@@ -620,6 +699,7 @@ if (DATA.research?.length) {
     }
     box.append(ledger([String(i + 1).padStart(2, "0"), p.year], b));
   });
+  collapse(box, ".led", keep(2, 2), "manuscripts");
   section("research", "Research", box, { count: DATA.research.length + " manuscripts" });
 }
 
@@ -638,6 +718,7 @@ if (DATA.education?.length) {
     if (e.courses?.length) b.append(tagRow(e.courses));
     box.append(ledger([e.period], b));
   });
+  collapse(box, ".led", keep(3, 2), "degrees");
   section("education", "Education", box);
 }
 
@@ -660,6 +741,7 @@ if (DATA.experience?.length) {
     if (j.stack?.length) b.append(tagRow(j.stack));
     box.append(ledger([j.period], b));
   });
+  collapse(box, ".led", keep(2, 2), "roles");
   section("experience", "Experience", box, { count: DATA.experience.length + " roles" });
 }
 
@@ -668,7 +750,7 @@ if (DATA.experience?.length) {
    the cap applies inside whatever is left, and picking a filter starts over at
    six — so "show more" always refers to the list actually on screen. */
 if (DATA.projects?.length) {
-  const STEP = 6;
+  const STEP = keep(3, 2);
   const box = el("div");
   const cats = [...new Set(DATA.projects.map(p => p.category || "Other"))];
   const nFeat = DATA.projects.filter(p => p.featured).length;
@@ -730,7 +812,7 @@ if (DATA.projects?.length) {
     const rest = Math.max(0, n - cap);
     moreWrap.classList.toggle("off", n <= STEP);
     moreBtn.classList.toggle("open", rest === 0);
-    moreTxt.textContent = rest ? `Show ${rest} more` : "Show fewer";
+    moreTxt.textContent = rest ? `Show ${rest} more ${plural(rest, "projects")}` : "Show fewer";
     moreBtn.setAttribute("aria-expanded", String(rest === 0));
   };
 
@@ -777,6 +859,7 @@ if (DATA.skills?.length) {
     d.append(h, i); box.append(d);
   });
   const total = DATA.skills.reduce((a, s) => a + s.items.length, 0);
+  collapse(box, ".sk", keep(3, 2), "areas");
   section("skills", "Skills", box, { count: total + " across " + DATA.skills.length + " areas" });
 }
 
@@ -788,6 +871,7 @@ if (DATA.awards?.length) {
     d.append(el("div", "y", a.year), el("div", "", a.text));
     box.append(d);
   });
+  collapse(box, ".awd", keep(5, 4), "entries");
   section("awards", "Awards", box, { count: DATA.awards.length + " entries" });
 }
 
@@ -812,6 +896,15 @@ if (DATA.activities?.length) {
       g.append(d);
     });
     box.append(g);
+  });
+  /* Rows collapse across groups, so a label whose grid emptied has to go too. */
+  collapse(box, ".act", keep(4, 3), "entries", () => {
+    box.querySelectorAll(".acts").forEach(g => {
+      const empty = ![...g.children].some(c => !c.classList.contains("gone"));
+      g.classList.toggle("gone", empty);
+      const lab = g.previousElementSibling;
+      if (lab && lab.classList.contains("g-label")) lab.classList.toggle("gone", empty);
+    });
   });
   section("activities", "Community", box, { nav: "Community" });
 }
