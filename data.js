@@ -130,7 +130,7 @@ const DATA = {
       org: "Al Muttaqeen Institute",
       logo: "logos/muttaqeen.png",
       place: "Remote",
-      period: "Jan 2026 — Jun 2026",
+      period: "Nov 2025 — May 2026",
       points: [
         `Built automated validation, reporting and reconciliation pipelines for
          institutional records, improving cross-departmental accuracy and audit readiness.`,
@@ -490,8 +490,8 @@ const DATA = {
       text: "Award winner, Special Mention. Second national conference, representing an assigned delegation through resolution drafting and floor debate.",
       url: "" },
     { group: "Volunteer & community",
-      title: "Inter-college sport — three medals",
-      text: "Medalled in three inter-college events: the apple-eating race, the matka race (running while balancing a clay pot), and the spoon-and-ball race (balancing a ball on a spoon held in the mouth).",
+      title: "Inter-college sport — badminton and three medals",
+      text: "Played inter-college badminton, and medalled in three inter-college races: the apple-eating race, the matka race (running while balancing a clay pot), and the spoon-and-ball race (balancing a ball on a spoon held in the mouth).",
       url: "" },
   ],
 

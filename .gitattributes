@@ -1,0 +1,15 @@
+# Binary assets. core.autocrlf is on for this machine, which means a fresh
+# clone would otherwise rewrite LF to CRLF inside these files on checkout and
+# break their byte offsets — fatal for a PDF's xref table.
+*.pdf   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.ico   binary
+
+# Source stays LF in the repo and in the working tree.
+*.html  text eol=lf
+*.js    text eol=lf
+*.json  text eol=lf
+*.md    text eol=lf

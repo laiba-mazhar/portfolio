@@ -3,3 +3,6 @@ sample-*.html
 logo_sheet.png
 _*.png
 .vercel/
+
+# local tooling, not part of the published site
+.claude/
