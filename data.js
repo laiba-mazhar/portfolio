@@ -179,7 +179,6 @@ const DATA = {
   /* --- projects --------------------------------------------------------- */
   // `category` groups them on the page. Add a new category just by typing one.
   projects: [
-    /* ---- research & machine learning ---- */
     {
       name: "CULPA — Pipeline Attribution",
       featured: true,
@@ -189,6 +188,16 @@ const DATA = {
         pruning turns 2³³ replays into 3 model fits.`,
       stack: ["Python", "Shapley values", "pandas", "LaTeX"],
       url: GH + "culpa-pipeline-attribution",
+    },
+    {
+      name: "NexusPilot",
+      featured: true,
+      category: "Full-stack & systems",
+      blurb: `Final year project. An integrated business platform unifying finance, HR and
+        CRM workflows over a 15-entity relational schema, with n8n-driven automation and
+        real-time geospatial and WebSocket data streams.`,
+      stack: ["Django REST", "Supabase", "n8n", "React"],
+      url: "",   // TODO: no public repo yet. Publish it and paste the link here.
     },
     {
       name: "ICS — Federated Learning Defense",
@@ -211,15 +220,6 @@ const DATA = {
       url: GH + "Explainable-XGBoost-Intrusion-Detection-RESEARCH_PAPER",
     },
     {
-      name: "English–Urdu Neural Machine Translation",
-      featured: true,
-      category: "Research & machine learning",
-      blurb: `Transformer built from scratch, benchmarked against an LSTM/Bahdanau-attention
-        seq2seq baseline on the UMC005 corpus. BPE tokenization, BLEU/ROUGE evaluation.`,
-      stack: ["PyTorch", "Transformers", "NLP"],
-      url: GH + "Transformer-English-Urdu-Machine-Translation",
-    },
-    {
       name: "ragforge",
       featured: true,
       category: "Research & machine learning",
@@ -228,6 +228,15 @@ const DATA = {
         and a CI regression gate.`,
       stack: ["Python", "RAG", "Chroma", "Qdrant"],
       url: GH + "ragforge",
+    },
+    {
+      name: "English–Urdu Neural Machine Translation",
+      featured: true,
+      category: "Research & machine learning",
+      blurb: `Transformer built from scratch, benchmarked against an LSTM/Bahdanau-attention
+        seq2seq baseline on the UMC005 corpus. BPE tokenization, BLEU/ROUGE evaluation.`,
+      stack: ["PyTorch", "Transformers", "NLP"],
+      url: GH + "Transformer-English-Urdu-Machine-Translation",
     },
     {
       name: "LaunchMind",
@@ -245,8 +254,6 @@ const DATA = {
       stack: ["scikit-learn", "Ensembles"],
       url: GH + "Bagging-vs-Boosting-Breast-Cancer-Classification",
     },
-
-    /* ---- data engineering & analytics ---- */
     {
       name: "Airflow E-Commerce Data Pipeline",
       category: "Data engineering & analytics",
@@ -271,18 +278,6 @@ const DATA = {
         variation in air quality.`,
       stack: ["Tableau", "Data visualization"],
       url: GH + "IranAirlineAnalysis-Tableau",
-    },
-
-    /* ---- full-stack & systems ---- */
-    {
-      name: "NexusPilot",
-      featured: true,
-      category: "Full-stack & systems",
-      blurb: `Final year project. An integrated business platform unifying finance, HR and
-        CRM workflows over a 15-entity relational schema, with n8n-driven automation and
-        real-time geospatial and WebSocket data streams.`,
-      stack: ["Django REST", "Supabase", "n8n", "React"],
-      url: "",   // TODO: no public repo yet. Publish it and paste the link here.
     },
     {
       name: "Maktab — Academy Management System",

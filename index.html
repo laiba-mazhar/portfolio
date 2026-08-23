@@ -942,7 +942,9 @@ if (DATA.experience?.length) {
    the cap applies inside whatever is left, and picking a filter starts over at
    six — so "show more" always refers to the list actually on screen. */
 if (DATA.projects?.length) {
-  const STEP = keep(3, 2);
+  /* All six featured projects show up front — the whole point of curating
+     them is that they are seen without a click. */
+  const STEP = keep(6, 3);
   const box = el("div");
   const cats = [...new Set(DATA.projects.map(p => p.category || "Other"))];
   const nFeat = DATA.projects.filter(p => p.featured).length;
