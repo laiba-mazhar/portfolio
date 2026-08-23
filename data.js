@@ -65,6 +65,33 @@ const DATA = {
       ],
     },
     {
+      title: "Decoupling Material Recognition from Disposition Policy in Edge Vision Waste Attribution",
+      authors: "L. Mazhar",
+      year: "2026",
+      status: "Industrial R&D · in progress",
+      abstract: `Ongoing R&D at AiPixal, documented as the technical record supporting an
+        HMRC R&D relief claim. An edge vision system on an NVIDIA Jetson Orin NX has to
+        identify raw material in a commercial kitchen and separate usable stock from
+        waste, writing an itemised entry to an immutable ledger. Training a detector
+        directly on “useful” and “waste” cannot work: those categories describe
+        provenance and intent rather than appearance, so a network asked to infer them
+        from pixels approximates the rule using whatever correlates in the training set
+        — background, container, capture session — and fails outside it. The design
+        therefore separates two label systems: a detector over 32 concrete material
+        classes, and a disposition mapping from material to useful, waste, packaging or
+        review that is per-site configuration rather than something learned, with
+        asymmetric per-class thresholds and a review route that never auto-commits to
+        the ledger. Reclassifying an ingredient becomes one line of YAML instead of a
+        new dataset and a retrain. The dataset programme is built as gates that fail
+        the build rather than checks that report, because the three failure modes that
+        matter — silent ingest divergence, near-duplicate leakage across splits, and
+        class identity confounded with capture session — all inflate reported accuracy
+        rather than depress it, so none of them announces itself.`,
+      tags: ["edge AI", "computer vision", "dataset integrity", "taxonomy design",
+             "NVIDIA Jetson", "industrial R&D"],
+      links: [],
+    },
+    {
       title: "Safety-First Maternal Risk Screening: Guideline Calibration and Urdu Risk Communication",
       authors: "L. Mazhar",
       year: "2026",
@@ -211,6 +238,21 @@ const DATA = {
         pruning turns 2³³ replays into 3 model fits.`,
       stack: ["Python", "Shapley values", "pandas", "LaTeX"],
       url: GH + "culpa-pipeline-attribution",
+    },
+    {
+      name: "Edge Waste Attribution Pipeline",
+      blurb: `Industrial R&D at AiPixal under an HMRC R&D programme. On-device vision that
+        identifies kitchen material and routes it to useful, waste, packaging or review,
+        holding the 32 learned material classes apart from the per-site disposition policy
+        so that reclassifying an ingredient is a configuration change rather than a
+        retrain. Includes the annotation programme: a written protocol, inter-annotator
+        agreement scoring, and integrity gates that fail the build on ingest divergence,
+        group leakage across splits or class-session confounding.`,
+      stack: ["Python", "Computer vision", "YOLO", "Roboflow", "NVIDIA Jetson", "Edge AI",
+              "Taxonomy design"],
+      url: "",
+      featured: true,
+      category: "Research & machine learning",
     },
     {
       name: "Maternal Health Risk Screening — R&D",

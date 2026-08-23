@@ -974,7 +974,9 @@ if (DATA.research?.length) {
   });
   /* No cap. Research is the strongest thing on the page and the section it is
      named for — every manuscript is open, the way experience and awards are. */
-  section("research", "Research", box, { count: DATA.research.length + " manuscripts" });
+  /* "entries" rather than "manuscripts": one of these is an in-progress
+     industrial R&D record, not a paper. */
+  section("research", "Research", box, { count: DATA.research.length + " entries" });
 }
 
 /* ============================================================== education */
