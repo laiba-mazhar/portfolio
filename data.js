@@ -188,7 +188,7 @@ const DATA = {
       org: "Freelance — Fiverr",
       place: "Remote — international clients",
       logo: "logos/fiverr.png",
-      period: "Dec 2024 — May 2026",
+      period: "Jun 2023 — Jun 2025",
       points: [
         `Delivered batch and streaming pipelines on GCP and AWS feeding ML models and
          BI dashboards.`,
