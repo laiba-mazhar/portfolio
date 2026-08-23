@@ -407,7 +407,7 @@ const DATA = {
       logo: "logos/aspire.png",
       place: "Pakistan",
       period: "2019 — 2021",     // add logos/aspire.png to use a real logo
-      detail: "1024 / 1100 — 93.09% · 2nd position in college · Fully funded scholarship",
+      detail: "1024 / 1100 — 93.09%, Grade A+ · 2nd position in college · Fully funded scholarship",
       courses: [],
     },
     {
