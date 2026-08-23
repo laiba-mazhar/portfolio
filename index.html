@@ -972,7 +972,8 @@ if (DATA.research?.length) {
     }
     box.append(ledger([String(i + 1).padStart(2, "0"), p.year], b));
   });
-  collapse(box, ".led", keep(3, 2), "manuscripts");
+  /* No cap. Research is the strongest thing on the page and the section it is
+     named for — every manuscript is open, the way experience and awards are. */
   section("research", "Research", box, { count: DATA.research.length + " manuscripts" });
 }
 
