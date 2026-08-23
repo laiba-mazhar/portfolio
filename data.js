@@ -65,6 +65,29 @@ const DATA = {
       ],
     },
     {
+      title: "Safety-First Maternal Risk Screening: Guideline Calibration and Urdu Risk Communication",
+      authors: "L. Mazhar",
+      year: "2026",
+      status: "R&D complete · IEEE manuscript",
+      abstract: `Published work on the UCI Maternal Health Risk dataset converges on one
+        shape: train a tree ensemble, report 80–85% accuracy, conclude that machine
+        learning is promising for maternal healthcare. This R&D project asks a different
+        question — whether a prediction changes the referral decision, and whether a
+        Lady Health Worker can say it out loud. Accuracy is replaced by a critical-miss
+        rate, a cost matrix and a fixed referral budget, so sending a high-risk mother
+        home is scored differently in kind from escalating her unnecessarily. Because the
+        dataset was collected in Bangladesh and its labelling protocol was never
+        published, eleven sourced clinical thresholds serve as an independent baseline
+        rather than assuming those labels transfer. The output is delivered as
+        hand-authored bilingual Urdu risk bands with SHAP attributions, not a class
+        index. A research prototype, explicitly not a medical device.`,
+      tags: ["maternal health", "clinical decision support", "cost-sensitive learning",
+             "explainable AI", "SHAP"],
+      links: [
+        { label: "Repository", url: GH + "maternal-health-risk" },
+      ],
+    },
+    {
       title: "Adversarial Data Poisoning Detection in Federated Learning via ICS",
       authors: "L. Mazhar",
       year: "2025",
@@ -188,6 +211,18 @@ const DATA = {
         pruning turns 2³³ replays into 3 model fits.`,
       stack: ["Python", "Shapley values", "pandas", "LaTeX"],
       url: GH + "culpa-pipeline-attribution",
+    },
+    {
+      name: "Maternal Health Risk Screening — R&D",
+      blurb: `R&D project on safety-first maternal risk screening. Swaps accuracy for a
+        critical-miss rate, a cost matrix and a fixed referral budget, calibrates against
+        eleven documented clinical thresholds instead of assuming the dataset's labels
+        transfer, and delivers the result as hand-authored bilingual Urdu risk bands in a
+        Streamlit interface. 155 passing tests and a nine-page IEEE-format manuscript.`,
+      stack: ["Python", "scikit-learn", "XGBoost", "SHAP", "Streamlit", "pytest", "LaTeX"],
+      url: GH + "maternal-health-risk",
+      featured: true,
+      category: "Research & machine learning",
     },
     {
       name: "NexusPilot",
