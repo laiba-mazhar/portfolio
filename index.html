@@ -193,12 +193,21 @@ nav.stuck{border-bottom-color:var(--line)}
 .dfoot{display:flex;flex-wrap:wrap;gap:8px;padding-top:18px}
 
 /* ================================================================== hero */
-header{padding:64px 0 68px;border-bottom:1px solid var(--line);position:relative;
-  isolation:isolate;overflow:hidden}   /* clips the canvas bleed below */
+header{padding:64px 0 68px;border-bottom:1px solid var(--line);position:relative}
 @media(max-width:860px){ header{padding:32px 0 44px} }
-/* the ambient field, drawn on canvas behind the hero */
-.field{position:absolute;inset:-6% -4%;width:108%;height:112%;z-index:-1;
-  pointer-events:none;opacity:.9}
+/* The ambient network: one fixed canvas behind the whole page rather than a
+   panel in the hero. Held at low opacity on purpose — it should register as
+   texture at the edge of vision and never compete with the text over it. */
+.field{
+  position:fixed;inset:0;width:100%;height:100%;z-index:0;
+  pointer-events:none;opacity:.3;
+}
+/* The lattice is scaled off the larger viewport dimension, so on a tall narrow
+   screen it lands proportionally bigger and covers noticeably more of the
+   pixels. Held back a little there so it stays equally recessive. */
+@media(max-width:860px){ .field{opacity:.2} }
+/* Everything readable sits above it. */
+header,main,footer{position:relative;z-index:1}
 .hero{display:grid;grid-template-columns:1fr 240px;gap:56px;align-items:end}
 @media(max-width:860px){ .hero{grid-template-columns:1fr;gap:30px} }
 
@@ -236,7 +245,7 @@ main section{padding:48px 0;border-bottom:1px solid var(--line);position:relativ
 @media(max-width:860px){ main section{padding:38px 0} }
 /* a dot grid, faint enough to be texture rather than pattern */
 main section::before{
-  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;opacity:.24;
   background-image:radial-gradient(circle at 1px 1px,var(--line-2) 1px,transparent 0);
   background-size:26px 26px;
   mask-image:linear-gradient(to bottom,transparent,#000 22%,#000 78%,transparent);
@@ -651,6 +660,9 @@ html.boot .field{animation:fade 1.6s var(--ease) .2s}
 
 <a class="skip" href="#main">Skip to content</a>
 
+<!-- The ambient network sits behind the entire document, not just the hero. -->
+<canvas class="field" aria-hidden="true"></canvas>
+
 <nav id="nav">
   <div class="wrap nav-in">
     <a href="#top" class="brand" aria-label="Back to top">
@@ -684,7 +696,6 @@ html.boot .field{animation:fade 1.6s var(--ease) .2s}
 <span id="top"></span>
 
 <header class="wrap">
-  <canvas class="field" aria-hidden="true"></canvas>
   <div class="hero">
     <div>
       <div class="eyebrow mo" id="h-eyebrow"></div>
@@ -1391,15 +1402,15 @@ function initMotion() {
     /* --- build the graph in model space -------------------------------- */
     /* Four layers along x, each a small grid in y and z. Edges run forward
        only, so it reads as flow rather than a mesh. */
-    const LAYERS = 4, ROWS = 3, COLS = 3;
+    const LAYERS = 5, ROWS = 3, COLS = 3;
     const nodes = [], edges = [];
     for (let l = 0; l < LAYERS; l++)
       for (let r = 0; r < ROWS; r++)
         for (let c = 0; c < COLS; c++)
           nodes.push({
-            x: (l - (LAYERS - 1) / 2) * 116,
-            y: (r - (ROWS - 1) / 2) * 74,
-            z: (c - (COLS - 1) / 2) * 74,
+            x: (l - (LAYERS - 1) / 2) * 172,
+            y: (r - (ROWS - 1) / 2) * 124,
+            z: (c - (COLS - 1) / 2) * 124,
             layer: l,
           });
 
@@ -1416,7 +1427,7 @@ function initMotion() {
                 edges.push([at(l, r, c), at(l + 1, rr, cc)]);
 
     // the lit node: middle layer, centre. The one the page is about.
-    const HOT = at(1, 1, 1);
+    const HOT = at(2, 1, 1);
 
     /* --- traffic ------------------------------------------------------- */
     /* A graph with static edges reads as a diagram. Packets moving along them
@@ -1477,13 +1488,18 @@ function initMotion() {
     const draw = () => {
       ctx.clearRect(0, 0, w, h);
 
-      const ay = t;                             // slow yaw
+      /* The canvas is fixed, so scroll drives a slow drift rather than moving
+         it away. Enough to feel connected to the page, not enough to notice.
+         Computed first because the yaw below reads it. */
+      const doc = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+      const k2 = Math.min(scrollY / doc, 1);
+
+      const ay = t + k2 * 0.9;                  // slow yaw, nudged by scroll
       const ax = Math.sin(t * 0.7) * 0.22;      // gentle nod, never a full roll
-      const zoom = Math.min(1, w / 980);
-      /* The scene drifts against the scroll, so the hero has real depth as it
-         leaves rather than sliding away as one flat plane. */
-      const par = Math.min(scrollY / Math.max(h, 1), 1) * 90;
-      const ox = w * (w < 700 ? 0.5 : 0.62), oy = h * 0.5 - par;
+      /* Sized off the viewport so the lattice fills a full-page background
+         rather than sitting in the middle of it. */
+      const zoom = Math.max(w, h) / 1050;
+      const ox = w * 0.5, oy = h * 0.5 - 40 + k2 * 80;
 
       const pr = nodes.map(n => proj(n, ay, ax, ox, oy, zoom));
 
@@ -1563,11 +1579,19 @@ function initMotion() {
 
     size();
     draw();
-    /* Paused whenever the hero is off screen — an animation nobody can see is
-       pure battery cost. */
+
+    /* The canvas is fixed now, so it is always on screen and the intersection
+       pause below can never fire. This is what actually stops the loop: a
+       backgrounded tab should not be spending a phone's battery on a graphic
+       nobody is looking at. */
+    const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
+    const start = () => { if (!raf && !document.hidden) raf = requestAnimationFrame(frame); };
+    document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+    /* Starts the loop once the canvas is in view. With a fixed canvas that is
+       immediately, but this keeps the behaviour correct if it ever goes back to
+       being scoped to a section. */
     new IntersectionObserver(es => es.forEach(e => {
-      if (e.isIntersecting && !raf) raf = requestAnimationFrame(frame);
-      else if (!e.isIntersecting && raf) { cancelAnimationFrame(raf); raf = 0; }
+      if (e.isIntersecting) start(); else stop();
     }), { threshold: 0 }).observe(canvas);
 
     let rz;
