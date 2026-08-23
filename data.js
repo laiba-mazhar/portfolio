@@ -147,7 +147,7 @@ const DATA = {
       role: "Data Developer & Analyst",
       org: "CloudWorks",
       logo: "logos/cloudworks.png",
-      place: "Texas, USA — Remote",
+      place: "Texas, USA — Remote · Part-time",
       period: "Jun 2026 — Present",
       points: [
         `Build and maintain data pipelines and analytics for US healthcare clients.`,
@@ -161,7 +161,7 @@ const DATA = {
       role: "Database Manager",
       org: "Al Muttaqeen Institute",
       logo: "logos/muttaqeen.png",
-      place: "Remote",
+      place: "Remote · Full-time",
       period: "Nov 2025 — May 2026",
       points: [
         `Built automated validation, reporting and reconciliation pipelines for
@@ -174,7 +174,7 @@ const DATA = {
       role: "Data Automation Engineering Intern",
       org: "Tashi Technologies Corp",
       logo: "logos/tashi.png",
-      place: "Islamabad, Pakistan",
+      place: "Islamabad, Pakistan — On-site",
       period: "Jul 2025 — Oct 2025",
       points: [
         `Built ETL workflows and classification/regression pipelines for enterprise automation.`,
