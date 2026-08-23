@@ -435,9 +435,11 @@ h2{font-weight:600;letter-spacing:-.036em;line-height:1;font-size:clamp(25px,3.1
    93 listed skills; the tools live on the back and the card turns on hover.
    The largest area holds twelve, which is what sets the card height. */
 .sk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
-/* Tall enough for the twelve-tool areas to fit without the back scrolling —
-   a clipped chip on a card that only exists to list tools is a bad trade. */
-.sk{height:234px;perspective:1000px}
+/* Tall enough for the largest area — seventeen tools — to fit without the back
+   scrolling. A clipped chip on a card whose only job is listing tools is a bad
+   trade, so this height is set by the worst case and checked against all of
+   them rather than eyeballed. */
+.sk{height:292px;perspective:1000px}
 .sk-in{position:relative;width:100%;height:100%;transform-style:preserve-3d;
   transition:transform .75s var(--out)}
 /* hover turns it; focus-visible does too, or the back is unreachable by keyboard */
