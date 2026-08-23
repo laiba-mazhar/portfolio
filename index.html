@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Laiba Mazhar</title>
 <meta name="description" content="Data Scientist & ML Researcher — trustworthy and diagnosable ML systems.">
-<meta name="theme-color" content="#0a0a10">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none'><rect x='13' y='13' width='74' height='74' rx='14' stroke='%2331313f' stroke-width='7'/><path d='M50 30V50h20' stroke='%23a685f7' stroke-width='10' stroke-linecap='round'/></svg>">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none'><rect x='13' y='13' width='74' height='74' rx='14' stroke='%2338322e' stroke-width='7'/><path d='M50 30V50h20' stroke='%23ff6b35' stroke-width='10' stroke-linecap='round'/></svg>">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,15 +16,15 @@
 /* ==========================================================================
    SIGNAL
 
-   A dark violet ground with one living accent, mono labels carrying the
+   A warm charcoal ground with one living accent, mono labels carrying the
    metadata, and dot-grid texture under the sections. The previous pass went
    fully achromatic and read as a memorial; the fix is not more colour
    everywhere, it is one confident hue doing real work.
 
    Two accents, and they mean different things:
-     --acc   violet, the voice of the page: indices, links, live state
-     --pos   mint, reserved for status that is genuinely positive
-   Anything else is a neutral. The neutrals are biased violet so the accent
+     --acc   orange, the voice of the page: indices, links, live state
+     --pos   teal, reserved for status that is genuinely positive
+   Anything else is a neutral. The neutrals are biased warm so the accent
    sits in the same family as its ground rather than on top of it.
 
    Dark only, deliberately. Following the OS preference meant a light-mode
@@ -34,21 +34,21 @@
 :root{
   color-scheme: dark;
 
-  --bg:#0a0a10;
-  --surface:#13131c;
-  --surface-2:#191922;
-  --line:#22222e;
-  --line-2:#31313f;
+  --bg:#0b0a09;
+  --surface:#161413;
+  --surface-2:#1d1a18;
+  --line:#262220;
+  --line-2:#38322e;
 
-  --ink:#edeef4;
-  --ink-2:#9a9aad;
-  --ink-3:#6f6f83;
+  --ink:#f4f1ef;
+  --ink-2:#a8a09b;
+  --ink-3:#7a726d;
 
-  --acc:#a685f7;              /* the page's voice */
-  --acc-lit:#c4aefc;
-  --acc-dim:rgba(166,133,247,.13);
-  --pos:#3ddc97;              /* positive status only */
-  --pos-dim:rgba(61,220,151,.12);
+  --acc:#ff6b35;              /* the page's voice: vivid, not gold */
+  --acc-lit:#ff9466;
+  --acc-dim:rgba(255,107,53,.14);
+  --pos:#4ec9b0;              /* low-chroma teal, positive status only */
+  --pos-dim:rgba(78,201,176,.13);
 
   --maxw:1180px;
   --gut:40px;
@@ -76,7 +76,7 @@ a{color:inherit;text-decoration:none}
 img{display:block;max-width:100%}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 ul{list-style:none}
-::selection{background:var(--acc);color:#0a0a10}
+::selection{background:var(--acc);color:#0b0a09}
 :focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:var(--r-sm)}
 
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 var(--gut)}
@@ -90,7 +90,7 @@ ul{list-style:none}
 }
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-.skip{position:absolute;left:14px;top:-60px;z-index:200;background:var(--acc);color:#0a0a10;
+.skip{position:absolute;left:14px;top:-60px;z-index:200;background:var(--acc);color:#0b0a09;
   padding:10px 16px;border-radius:var(--r);font-weight:600;font-size:14px;transition:top .2s}
 .skip:focus{top:14px}
 
@@ -175,9 +175,9 @@ nav.stuck{border-bottom-color:var(--line)}
 .btn svg,.btn span{position:relative}
 .btn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.7;
   stroke-linecap:round;stroke-linejoin:round;flex:none}
-.btn.pri{background:var(--acc);border-color:var(--acc);color:#0a0a10;font-weight:600}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#0b0a09;font-weight:600}
 .btn.pri::before{background:#fff;opacity:.18}
-.btn.pri:hover{color:#0a0a10;border-color:var(--acc-lit);background:var(--acc-lit)}
+.btn.pri:hover{color:#0b0a09;border-color:var(--acc-lit);background:var(--acc-lit)}
 
 /* -------------------------------------------------------------- mobile nav */
 .drawer{position:fixed;inset:0;z-index:95;background:var(--bg);display:flex;flex-direction:column;
@@ -308,7 +308,7 @@ h2{font-weight:600;letter-spacing:-.036em;line-height:1;font-size:clamp(25px,3.1
 .mark{width:38px;height:38px;flex:none;display:grid;place-items:center;padding:6px;
   background:var(--ink);border-radius:var(--r-sm);transition:transform .4s var(--out)}
 .mark img{max-width:100%;max-height:100%;object-fit:contain}
-.mark .mg{font-family:var(--mono);font-size:12px;font-weight:500;color:#0a0a10}
+.mark .mg{font-family:var(--mono);font-size:12px;font-weight:500;color:#0b0a09}
 .led:hover .mark{transform:scale(1.06)}
 .orgn{color:var(--acc);font-size:14.5px;font-weight:500}
 .where{color:var(--ink-3);font-size:12.5px;margin-top:2px}
@@ -335,7 +335,7 @@ h2{font-weight:600;letter-spacing:-.036em;line-height:1;font-size:clamp(25px,3.1
   transition:border-color .25s,color .25s,background .25s}
 .chip .n{opacity:.5;margin-left:7px}
 .chip:hover{border-color:var(--line-2);color:var(--ink-2)}
-.chip.on{border-color:var(--acc);color:#0a0a10;background:var(--acc);font-weight:500}
+.chip.on{border-color:var(--acc);color:#0b0a09;background:var(--acc);font-weight:500}
 .chip.on .n{opacity:.65}
 
 /* The grid owns the vanishing point; each card is its own 3D layer. Note the
@@ -362,7 +362,7 @@ h2{font-weight:600;letter-spacing:-.036em;line-height:1;font-size:clamp(25px,3.1
   content:"";position:absolute;inset:0;pointer-events:none;opacity:0;
   border-radius:var(--r);                       /* stands in for overflow:hidden */
   background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),
-    rgba(166,133,247,.12),transparent 60%);
+    rgba(255,107,53,.13),transparent 60%);
   transition:opacity .45s var(--ease);
 }
 .card:hover::after{opacity:1}
@@ -394,8 +394,10 @@ h2{font-weight:600;letter-spacing:-.036em;line-height:1;font-size:clamp(25px,3.1
 /* revealed rows unfold instead of popping into place. No fill mode: with
    `both` the row holds opacity:0 until the animation starts, so anywhere
    animations are deferred the content sits there invisible. */
-@keyframes unfold{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.lifted{animation:unfold .5s var(--out)}
+/* Offset only, no opacity. If the animation is ever frozen part-way the row
+   sits six pixels high and fully readable, rather than invisible. */
+@keyframes unfold{from{transform:translateY(-7px)}to{transform:none}}
+.lifted{animation:unfold .45s var(--out)}
 
 /* ================================================================= skills */
 /* Each group's gauge is its share of the listed skills — real information, so
@@ -493,6 +495,39 @@ footer{padding:72px 0 48px;position:relative}
    fires. A scroll animation must degrade to "shown", never to a blank page. */
 .rv{transition:opacity .7s var(--out),transform .7s var(--out)}
 html.reveal-on .rv:not(.in){opacity:0;transform:translateY(16px)}
+html:not(.reveal-on) .rv{transition:none}   /* same reasoning as .w above */
+
+/* ========================================================== transitions */
+/* Masked word reveal: each word sits in a clipped box and the glyphs slide up
+   out of it, so a heading assembles line by line instead of fading. The mask
+   is what sells it — without overflow:hidden this is just a slide.
+
+   It degrades twice over. If the split never runs there are no .w wrappers and
+   the heading is plain text; if the observer never fires, showAll() adds .in. */
+.w{display:inline-block;overflow:hidden;vertical-align:bottom;padding-bottom:.06em}
+.w>i{display:inline-block;font-style:normal;transition:transform .8s var(--out)}
+/* The offset state lives under reveal-on only, the same guard the row reveal
+   uses. Without that gate a browser that never runs the transition leaves the
+   glyphs parked below their mask and the heading reads as blank. */
+html.reveal-on .w>i{transform:translateY(110%)}
+html.reveal-on .in .w>i,html.reveal-on .w-go .w>i{transform:none}
+/* And no transition to traverse when the reveal is off, so the failsafe path
+   snaps straight to readable instead of easing from a state it can never
+   leave if frames are throttled. */
+html:not(.reveal-on) .w>i{transition:none}
+/* stagger by position, capped so a long heading does not crawl */
+.w:nth-child(1)>i{transition-delay:0ms}      .w:nth-child(2)>i{transition-delay:55ms}
+.w:nth-child(3)>i{transition-delay:110ms}    .w:nth-child(4)>i{transition-delay:165ms}
+.w:nth-child(5)>i{transition-delay:220ms}    .w:nth-child(6)>i{transition-delay:275ms}
+.w:nth-child(n+7)>i{transition-delay:330ms}
+
+/* an accent edge that sweeps across the top of a section as it arrives */
+main section::after{
+  content:"";position:absolute;top:-1px;left:0;height:1px;width:0;
+  background:linear-gradient(to right,var(--acc),transparent);
+  transition:width 1.4s var(--out);
+}
+main section.seen::after{width:100%}
 
 /* ============================================================== the boot */
 /* The page arrives as one sequence rather than scattered effects. Unfilled on
@@ -518,6 +553,8 @@ html.boot .field{animation:fade 1.6s var(--ease) .2s}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}
   html.reveal-on .rv{opacity:1!important;transform:none!important;transition:none!important}
+  .w>i{transform:none!important;transition:none!important}
+  main section::after{transition:none;width:100%}
   .bar i{transition:none}
   .card:hover .aw,.mark,.brand:hover svg .tk{transform:none!important}
   .card:hover h3,.card:hover .c-meta,.card:hover p,.card:hover .tags{transform:none!important}
@@ -1155,6 +1192,27 @@ addEventListener("scroll", () => { if (!q) { q = true; requestAnimationFrame(onS
 onScroll();
 totop.onclick = () => scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
 
+/* Wrap each word so it can slide out from behind a mask. Only text nodes are
+   touched, so element children — the italic surname, inline links — survive. */
+const splitWords = el => {
+  if (!el || el.dataset.split) return;
+  el.dataset.split = "1";
+  [...el.childNodes].forEach(n => {
+    if (n.nodeType !== 3 || !n.nodeValue.trim()) return;
+    const frag = document.createDocumentFragment();
+    n.nodeValue.split(/(\s+)/).forEach(tok => {
+      if (!tok) return;
+      if (!tok.trim()) { frag.append(document.createTextNode(tok)); return; }
+      const w = document.createElement("span"); w.className = "w";
+      const i = document.createElement("i"); i.textContent = tok;
+      w.append(i); frag.append(w);
+    });
+    n.replaceWith(frag);
+  });
+};
+document.querySelectorAll("main section h2, .fcta").forEach(splitWords);
+if (!reduce) splitWords($("h-tag"));
+
 /* reveal */
 document.querySelectorAll(".rv").forEach(x => {
   const i = [...x.parentElement.children].indexOf(x);
@@ -1164,8 +1222,11 @@ const targets = [...document.querySelectorAll(".rv")];
 const showAll = () => {
   root.classList.remove("reveal-on");
   targets.forEach(x => x.classList.add("in"));
-  // bars key off .in, so anything not inside a .rv needs nudging directly
+  // bars and masked words key off .in, so anything outside a .rv needs nudging
   document.querySelectorAll(".bar").forEach(b => b.classList.add("on"));
+  document.querySelectorAll("main section, .fcta, .tagline").forEach(x => {
+    x.classList.add("seen"); x.classList.add("w-go");
+  });
 };
 
 if (!("IntersectionObserver" in window) || reduce) {
@@ -1178,6 +1239,16 @@ if (!("IntersectionObserver" in window) || reduce) {
     seen++; e.target.classList.add("in"); rio.unobserve(e.target);
   }), { rootMargin: "0px 0px -8% 0px", threshold: .04 });
   targets.forEach(x => rio.observe(x));
+
+  /* Sections sweep their top edge, and the footer line reveals its own words.
+     Separate from the row observer because a section is far taller than the
+     rows inside it and wants a different trigger point. */
+  const bigio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.classList.add("seen", "w-go");
+    bigio.unobserve(e.target);
+  }), { rootMargin: "0px 0px -12% 0px", threshold: .02 });
+  document.querySelectorAll("main section, .fcta").forEach(x => bigio.observe(x));
 
   // Failsafe: nothing reported shortly after load means the observer is broken.
   // Show the page rather than leave it blank.
@@ -1195,6 +1266,8 @@ document.querySelectorAll("main section").forEach(s => nio.observe(s));
 /* The entrance runs now, with the content in place. Starting it earlier would
    animate an empty skeleton and be over before data.js had rendered a word. */
 document.documentElement.classList.add("boot");
+/* the hero line reveals with the entrance rather than on scroll */
+requestAnimationFrame(() => $("h-tag").classList.add("w-go"));
 initMotion();
 }
 </script>
@@ -1281,7 +1354,10 @@ function initMotion() {
       const ay = t;                             // slow yaw
       const ax = Math.sin(t * 0.7) * 0.22;      // gentle nod, never a full roll
       const zoom = Math.min(1, w / 980);
-      const ox = w * (w < 700 ? 0.5 : 0.62), oy = h * 0.5;
+      /* The scene drifts against the scroll, so the hero has real depth as it
+         leaves rather than sliding away as one flat plane. */
+      const par = Math.min(scrollY / Math.max(h, 1), 1) * 90;
+      const ox = w * (w < 700 ? 0.5 : 0.62), oy = h * 0.5 - par;
 
       const pr = nodes.map(n => proj(n, ay, ax, ox, oy, zoom));
 
@@ -1292,8 +1368,8 @@ function initMotion() {
         const depth = (A.s + B.s) / 2;
         const hot = a === HOT || b === HOT;
         ctx.strokeStyle = hot
-          ? "rgba(196,174,252," + (depth * 0.5).toFixed(3) + ")"
-          : "rgba(166,133,247," + (depth * 0.17).toFixed(3) + ")";
+          ? "rgba(255,148,102," + (depth * 0.5).toFixed(3) + ")"
+          : "rgba(255,107,53," + (depth * 0.19).toFixed(3) + ")";
         ctx.beginPath();
         ctx.moveTo(A.x, A.y);
         ctx.lineTo(B.x, B.y);
@@ -1309,17 +1385,17 @@ function initMotion() {
           const pulse = 0.5 + 0.5 * Math.sin(t * 9);
           ctx.beginPath();
           ctx.arc(p.x, p.y, rad + 5 + pulse * 4, 0, 6.2832);
-          ctx.fillStyle = "rgba(61,220,151," + (0.14 * (1 - pulse * .5)).toFixed(3) + ")";
+          ctx.fillStyle = "rgba(78,201,176," + (0.16 * (1 - pulse * .5)).toFixed(3) + ")";
           ctx.fill();
           ctx.beginPath();
           ctx.arc(p.x, p.y, rad + 1.4, 0, 6.2832);
-          ctx.fillStyle = "rgba(61,220,151,.95)";
+          ctx.fillStyle = "rgba(78,201,176,.95)";
           ctx.fill();
           continue;
         }
         ctx.beginPath();
         ctx.arc(p.x, p.y, rad, 0, 6.2832);
-        ctx.fillStyle = "rgba(196,174,252," + (0.22 + p.s * 0.5).toFixed(3) + ")";
+        ctx.fillStyle = "rgba(255,148,102," + (0.24 + p.s * 0.5).toFixed(3) + ")";
         ctx.fill();
       }
     };
